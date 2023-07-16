@@ -1,0 +1,37 @@
+datasource mysql {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Organization {
+  code       String?  @unique
+  createdAt  DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  invoices   Invoice? @relation(fields: [invoicesId], references: [id])
+  invoicesId Int?
+  name       String
+  updatedAt  DateTime @updatedAt
+  uuid       String   @unique
+}
+
+model Invoice {
+  createdAt    DateTime              @default(now())
+  direction    EnumInvoiceDirection?
+  dueDate      DateTime
+  id           Int                   @id @default(autoincrement())
+  organization Organization[]
+  paidDate     DateTime?
+  price        Int
+  taxPointDate DateTime
+  updatedAt    DateTime              @updatedAt
+  uuid         String                @unique
+}
+
+enum EnumInvoiceDirection {
+  INCOME
+  OUTCOME
+}
