@@ -1,0 +1,17 @@
+datasource mysql {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Organization {
+  code      String?  @unique
+  createdAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  updatedAt DateTime @updatedAt
+  uuid      String   @unique
+}
